@@ -1,0 +1,331 @@
+// // // // // import React, { useState, useEffect } from "react";
+// // // // // import axios from "axios";
+// // // // // import { useNavigate } from "react-router-dom";
+
+// // // // // const AddUser = () => {
+// // // // //     const [title, setTitle] = useState("");
+// // // // //     const [description, setDescription] = useState("");
+// // // // //     const [time, setTime] = useState("");
+// // // // //     const navigate = useNavigate();
+
+// // // // //     useEffect(() => {
+// // // // //         const getCurrentDateTime = () => {
+// // // // //             const current = new Date();
+// // // // //             const offset = current.getTimezoneOffset() * 60000;
+// // // // //             const localISOTime = new Date(current - offset).toISOString().slice(0, 16);
+// // // // //             return localISOTime;
+// // // // //         };
+// // // // //         setTime(getCurrentDateTime());
+// // // // //     }, []);
+
+// // // // //     const saveUser = async (e) => {
+// // // // //         e.preventDefault();
+// // // // //         try {
+// // // // //             await axios.post("http://localhost:5000/users", {
+// // // // //                 title,
+// // // // //                 description,
+// // // // //                 time
+// // // // //             });
+// // // // //             navigate("/");
+// // // // //         } catch (error) {
+// // // // //             console.log(error);
+// // // // //         }
+// // // // //     }
+
+// // // // //     return (
+// // // // //         <div className="columns mt-5 is-centered">
+// // // // //             <div className="column is-half"></div>
+// // // // //             <form onSubmit={saveUser}>
+// // // // //                 <div className="field">
+// // // // //                     <label className="label">Title</label>
+// // // // //                     <div className="control">
+// // // // //                         <input 
+// // // // //                             type="text" 
+// // // // //                             className="input" 
+// // // // //                             value={title} 
+// // // // //                             onChange={(e) => setTitle(e.target.value)} 
+// // // // //                             placeholder='Title' 
+// // // // //                         />
+// // // // //                     </div>
+// // // // //                 </div>
+// // // // //                 <div className="field">
+// // // // //                     <label className="label">Description</label>
+// // // // //                     <div className="control">
+// // // // //                         <input 
+// // // // //                             type="text" 
+// // // // //                             className="input" 
+// // // // //                             value={description} 
+// // // // //                             onChange={(e) => setDescription(e.target.value)} 
+// // // // //                             placeholder='Description' 
+// // // // //                         />
+// // // // //                     </div>
+// // // // //                 </div>
+// // // // //                 <div className="field">
+// // // // //                     <label className="label">Date & Time</label>
+// // // // //                     <div className="control">
+// // // // //                         <input 
+// // // // //                             type="datetime-local" 
+// // // // //                             className="input" 
+// // // // //                             value={time} 
+// // // // //                             onChange={(e) => setTime(e.target.value)} 
+// // // // //                             placeholder='Date & Time' 
+// // // // //                         />
+// // // // //                     </div>
+// // // // //                 </div>
+// // // // //                 <div className="field">
+// // // // //                     <button type='submit' className='button is-success'>Save</button>
+// // // // //                 </div>
+// // // // //             </form>
+// // // // //         </div>
+// // // // //     )
+// // // // // }
+
+// // // // // export default AddUser;
+
+// // // // //////////////////////////////////////////////////////////////////////////////////////////
+
+// // // // import React, { useState, useEffect, useCallback } from "react";
+// // // // import axios from "axios";
+// // // // import { useNavigate, useParams } from "react-router-dom";
+
+// // // // const EditUser = () => {
+// // // //   const [title, setTitle] = useState("");
+// // // //   const [description, setDescription] = useState("");
+// // // //   const [time, setTime] = useState("");
+// // // //   const navigate = useNavigate();
+// // // //   const { id } = useParams();
+
+// // // //   const getUserById = useCallback(async () => {
+// // // //     try {
+// // // //       const response = await axios.get(`http://localhost:5000/users/${id}`);
+// // // //       if (response.data) {
+// // // //         setTitle(response.data.title);
+// // // //         setDescription(response.data.description);
+// // // //         setTime(response.data.time);
+// // // //       }
+// // // //     } catch (error) {
+// // // //       console.error('Error fetching user data:', error);
+// // // //     }
+// // // //   }, [id]);
+
+// // // //   useEffect(() => {
+// // // //     getUserById();
+// // // //   }, [id, getUserById]);
+
+// // // //   useEffect(() => {
+// // // //     if (!time) {
+// // // //       const now = new Date();
+// // // //       const formattedNow = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+// // // //       setTime(formattedNow);
+// // // //     }
+// // // //   }, [time]);
+
+// // // //   const updateUser = async (e) => {
+// // // //     e.preventDefault();
+// // // //     try {
+// // // //       await axios.patch(`http://localhost:5000/users/${id}`, {
+// // // //         title,
+// // // //         description,
+// // // //         time
+// // // //       });
+// // // //       navigate("/");
+// // // //     } catch (error) {
+// // // //       console.log(error);
+// // // //     }
+// // // //   };
+
+// // // //   return (
+// // // //     <div className="columns mt-5 is-centered">
+// // // //       <div className="column is-half">
+// // // //         <form onSubmit={updateUser}>
+// // // //           <div className="field">
+// // // //             <label className="label">Title</label>
+// // // //             <div className="control">
+// // // //               <input
+// // // //                 type="text"
+// // // //                 className="input"
+// // // //                 value={title}
+// // // //                 onChange={(e) => setTitle(e.target.value)}
+// // // //                 placeholder='Title'
+// // // //               />
+// // // //             </div>
+// // // //           </div>
+// // // //           <div className="field">
+// // // //             <label className="label">Description</label>
+// // // //             <div className="control">
+// // // //               <input
+// // // //                 type="text"
+// // // //                 className="input"
+// // // //                 value={description}
+// // // //                 onChange={(e) => setDescription(e.target.value)}
+// // // //                 placeholder='Description'
+// // // //               />
+// // // //             </div>
+// // // //           </div>
+// // // //           <div className="field">
+// // // //             <label className="label">Date & Time</label>
+// // // //             <div className="control">
+// // // //               <input
+// // // //                 type="datetime-local"
+// // // //                 className="input"
+// // // //                 value={time}
+// // // //                 onChange={(e) => setTime(e.target.value)}
+// // // //                 placeholder='Date & Time'
+// // // //               />
+// // // //             </div>
+// // // //           </div>
+// // // //           <div className="field">
+// // // //             <button type='submit' className='button is-success'>Update</button>
+// // // //           </div>
+// // // //         </form>
+// // // //       </div>
+// // // //     </div>
+// // // //   );
+// // // // };
+
+// // // // export default EditUser;
+
+// // // ////////////////////////////////////////////////////////////////////////////////
+
+// // // import React, { useState, useEffect, useCallback, useRef } from 'react';
+// // // import axios from 'axios';
+// // // import { Link } from 'react-router-dom';
+
+// // // const UserList = () => {
+// // //   const [users, setUsers] = useState([]);
+// // //   const scheduledNotifications = useRef([]);
+
+// // //   useEffect(() => {
+// // //     if ('Notification' in window) {
+// // //       Notification.requestPermission().then(permission => {
+// // //         if (permission !== 'granted') {
+// // //           alert('Permission for notifications was denied');
+// // //         }
+// // //       });
+// // //     }
+// // //   }, []);
+
+// // //   const getUsers = useCallback(async () => {
+// // //     try {
+// // //       const response = await axios.get('http://localhost:5000/users');
+// // //       setUsers(response.data);
+// // //     } catch (error) {
+// // //       console.log('Error fetching users:', error);
+// // //     }
+// // //   }, []);
+
+// // //   useEffect(() => {
+// // //     const fetchUsers = async () => {
+// // //       await getUsers();
+// // //     };
+// // //     fetchUsers();
+// // //   }, [getUsers]);
+
+// // //   useEffect(() => {
+// // //     const scheduleNotifications = () => {
+// // //       // Clear any existing timeouts
+// // //       scheduledNotifications.current.forEach(clearTimeout);
+// // //       scheduledNotifications.current = [];
+
+// // //       users.forEach(user => {
+// // //         const notificationTime = new Date(user.date).getTime() - new Date().getTime();
+// // //         console.log(`Scheduling notification for ${user.title} in ${notificationTime} ms`);
+// // //         if (notificationTime > 0) {
+// // //           const timeoutId = setTimeout(() => {
+// // //             new Notification(user.title, {
+// // //               body: user.description,
+// // //               requireInteraction: true,
+// // //             });
+// // //           }, notificationTime);
+// // //           scheduledNotifications.current.push(timeoutId);
+// // //         }
+// // //       });
+// // //     };
+
+// // //     if (users.length > 0) {
+// // //       scheduleNotifications();
+// // //     }
+// // //   }, [users]);
+
+// // //   const deleteUser = async (id) => {
+// // //     try {
+// // //       await axios.delete(`http://localhost:5000/users/${id}`);
+// // //       getUsers();
+// // //     } catch (error) {
+// // //       console.log('Error deleting user:', error);
+// // //     }
+// // //   };
+
+// // //   return (
+// // //     <div className="columns mt-5 is-centered">
+// // //       <div className="column is-half">
+// // //         <Link to={`add`} className="button is-success">Add New</Link>
+// // //         <table className="table is-strippped is-fullwidth">
+// // //           <thead>
+// // //             <tr>
+// // //               <th>ID</th>
+// // //               <th>Title</th>
+// // //               <th>Description</th>
+// // //               <th>Time</th>
+// // //               <th>Actions</th>
+// // //             </tr>
+// // //           </thead>
+// // //           <tbody>
+// // //             {users.map((user, index) => (
+// // //               <tr key={user.id}>
+// // //                 <td>{index + 1}</td>
+// // //                 <td>{user.title}</td>
+// // //                 <td>{user.description}</td>
+// // //                 <td>{new Date(user.date).toLocaleString()}</td>
+// // //                 <td>
+// // //                   <Link to={`edit/${user.id}`} className="button is-small is-info">Edit</Link>
+// // //                   <button onClick={() => deleteUser(user.id)} className="button is-small is-danger">Delete</button>
+// // //                 </td>
+// // //               </tr>
+// // //             ))}
+// // //           </tbody>
+// // //         </table>
+// // //       </div>
+// // //     </div>
+// // //   );
+// // // };
+
+// // // export default UserList;
+
+// // ///////////////////////////////////////////////////////////////////////
+
+// // import { BrowserRouter, Routes, Route } from "react-router-dom";
+// // import UserList from "./components/UserList";
+// // import AddUser from "./components/AddUser";
+// // import EditUser from "./components/EditUser";
+
+// // function App() {
+// //   return (
+// //     <BrowserRouter>
+// //       <Routes>
+// //         <Route path="/" element={<UserList />} />
+// //         <Route path="/add" element={<AddUser />} />
+// //         <Route path="edit/:id" element={<EditUser />} />
+// //       </Routes>
+// //     </BrowserRouter>
+// //   );
+// // }
+
+// // export default App;
+
+// //////////////////////////////////////////////////////////////////////
+
+// import React from 'react';
+// import ReactDOM from 'react-dom/client';
+// import App from './App';
+// import "bulma/css/bulma.css";
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>
+// );
+
+
+
